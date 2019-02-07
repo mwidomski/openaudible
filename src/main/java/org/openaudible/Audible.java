@@ -446,7 +446,7 @@ public class Audible implements IQueueListener<Book> {
 				if (isIgnoredBook(b)) continue;
 				
 				if (canDownload(b)) toDownload.add(b);
-				if (canConvert(b)) toConvert.add(b);
+				//if (canConvert(b)) toConvert.add(b);
 				seconds += TimeToSeconds.parseTimeStringToSeconds(b.getDuration());
 			}
 			totalDuration = seconds;
