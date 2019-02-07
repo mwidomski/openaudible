@@ -598,6 +598,10 @@ public class Audible implements IQueueListener<Book> {
 	public File getMP3FileDest(Book b) {
 		return Directories.MP3.getDir(b.getProduct_id() + ".mp3");
 	}
+
+	public File getMP4FileDest(Book b) {
+		return Directories.MP4.getDir(b.getProduct_id() + ".m4a");
+	}
 	
 	public boolean hasImage(Book b) {
 		return getImageFileDest(b).exists();

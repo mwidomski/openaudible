@@ -14,7 +14,7 @@ import java.io.IOException;
  * Created  6/26/2017.
  */
 public enum Directories {
-	BASE, WEB, META, AAX, ART, MP3, TMP, APP;
+	BASE, WEB, META, AAX, ART, MP3, MP4, TMP, APP;
 	
 	final static String dirPrefsName = "directories.json";
 	
@@ -202,6 +202,9 @@ public enum Directories {
 				break;
 			case MP3:
 				out = "MP3";
+				break;
+			case MP4:
+				out = "MP4";
 				break;
 			case TMP:
 				out = "Temp Files";

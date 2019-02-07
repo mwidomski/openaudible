@@ -22,7 +22,7 @@ import java.util.concurrent.TimeUnit;
 public class ConvertJob implements IQueueJob, LineListener {
 	private static final Log LOG = LogFactory.getLog(ConvertJob.class);
 	final Book book;
-	final File aax, mp3, image, temp;
+	final File aax, mp3, mp4, image, temp;
 	volatile boolean quit = false;
 	ArrayList<String> metaData = new ArrayList<>();
 	boolean nextMeta = false;
@@ -39,6 +39,7 @@ public class ConvertJob implements IQueueJob, LineListener {
 		book = b;
 		aax = Audible.instance.getAAXFileDest(b);
 		mp3 = Audible.instance.getMP3FileDest(b);
+		mp4 = Audible.instance.getMP4FileDest(b);
 		image = Audible.instance.getImageFileDest(b);
 		temp = new File(Directories.getTmpDir(), book.id() + "_temp.mp3");
 		duration = book.getDuration();
@@ -260,7 +261,7 @@ public class ConvertJob implements IQueueJob, LineListener {
 		}
 	}
 	
-	public File convert() throws Exception {
+	public File convertMP3() throws Exception {
 		long start = System.currentTimeMillis();
 		
 		boolean ok = false;
@@ -296,6 +297,11 @@ public class ConvertJob implements IQueueJob, LineListener {
 		
 		return mp3;
 	}
+
+	public File convertMP4(){
+
+	    return mp4;
+    };
 	
 	@Override
 	public void quitJob() {
@@ -306,7 +312,12 @@ public class ConvertJob implements IQueueJob, LineListener {
 	
 	@Override
 	public void processJob() throws Exception {
-		convert();
+		switch(SupportedFormats.convertFormat) {
+            case MP3:
+                convertMP3();
+            case MP4:
+                convertMP4();
+        }
 	}
 	
 	public IProgressTask getProgress() {

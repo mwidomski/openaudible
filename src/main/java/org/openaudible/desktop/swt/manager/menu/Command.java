@@ -10,7 +10,7 @@ public enum Command {
 	Paste,
 	About,
 	ViewInAudible,
-	Show_MP3, Show_AAX,
+	Show_MP3, Show_AAX, Show_MP4,
 	Play,
 	Console,
 	Export_Web_Page,
@@ -22,7 +22,8 @@ public enum Command {
 	Rescan_Library,
 	Download,
 	ParseAAX,
-	Convert,
+	Convert_To_MP3,
+	Convert_To_MP4,
 	Download_All,
 	Convert_All,
 	Help,
@@ -65,6 +66,8 @@ public enum Command {
 				break;
 			case Show_AAX:
 				break;
+			case Show_MP4:
+				break;
 			case Play:
 				break;
 			case Export_Web_Page:
@@ -86,7 +89,9 @@ public enum Command {
 				break;
 			case ParseAAX:
 				break;
-			case Convert:
+			case Convert_To_MP3:
+				break;
+			case Convert_To_MP4:
 				break;
 			case Download_All:
 				break;
@@ -145,6 +150,8 @@ public enum Command {
 				break;
 			case Show_AAX:
 				break;
+			case Show_MP4:
+				break;
 			case Play:
 				break;
 			case Export_Web_Page:
@@ -163,7 +170,9 @@ public enum Command {
 				break;
 			case ParseAAX:
 				break;
-			case Convert:
+			case Convert_To_MP3:
+				break;
+			case Convert_To_MP4:
 				break;
 			case Download_All:
 				break;

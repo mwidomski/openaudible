@@ -10,6 +10,7 @@ import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.widgets.*;
 import org.openaudible.Audible;
 import org.openaudible.audible.ConnectionNotifier;
+import org.openaudible.convert.SupportedFormats;
 import org.openaudible.desktop.swt.gui.GUI;
 import org.openaudible.desktop.swt.gui.MessageBoxFactory;
 import org.openaudible.desktop.swt.gui.progress.ProgressTask;
@@ -22,6 +23,9 @@ import org.openaudible.desktop.swt.manager.views.AboutDialog;
 import org.openaudible.desktop.swt.manager.views.LogWindow;
 import org.openaudible.desktop.swt.manager.views.Preferences;
 import org.openaudible.desktop.swt.util.shop.WidgetShop;
+
+import static org.openaudible.convert.SupportedFormats.MP3;
+import static org.openaudible.convert.SupportedFormats.MP4;
 
 /**
  * The CommandCenter is responsible to react on user-action.
@@ -200,7 +204,12 @@ public class CommandCenter {
 			case Copy:
 			case Paste:
 				break;
-			case Convert:
+			case Convert_To_MP3:
+				SupportedFormats.convertFormat = MP3;
+				gui.convertSelected();
+				break;
+			case Convert_To_MP4:
+				SupportedFormats.convertFormat = MP4;
 				gui.convertSelected();
 				break;
 			case Rescan_Library:
@@ -216,9 +225,12 @@ public class CommandCenter {
 				gui.viewInAudible();
 				break;
 			case Show_MP3:
-				gui.explore();
+				gui.exploreMP3();
 				break;
 			case Show_AAX:
+				break;
+			case Show_MP4:
+				gui.exploreMP4();
 				break;
 			case Play:
 				gui.play();
@@ -307,7 +319,7 @@ public class CommandCenter {
 		if (expiredApp)
 			return c == Command.Quit || c == Command.Check_For_Update || c == Command.About;
 		switch (c) {
-			case Convert:
+			case Convert_To_MP3:
 				return gui.canConvert();
 			case Download:
 				return gui.canDownload();

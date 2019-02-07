@@ -531,7 +531,7 @@ public class AudibleGUI implements BookListener, ConnectionListener {
 		}
 	}
 	
-	public void explore() {
+	public void exploreMP3() {
 		try {
 			Book b = onlyOneSelected();
 			File m = audible.getMP3FileDest(b);
@@ -539,6 +539,21 @@ public class AudibleGUI implements BookListener, ConnectionListener {
 				GUI.explore(m);
 				
 				
+				// Desktop.getDesktop().open(m.getParentFile());
+			}
+		} catch (Throwable th) {
+			showError(th, "showing file in system");
+		}
+	}
+
+	public void exploreMP4() {
+		try {
+			Book b = onlyOneSelected();
+			File m = audible.getMP4FileDest(b);
+			if (m.exists()) {
+				GUI.explore(m);
+
+
 				// Desktop.getDesktop().open(m.getParentFile());
 			}
 		} catch (Throwable th) {
