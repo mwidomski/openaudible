@@ -95,7 +95,7 @@ public class AudibleGUI implements BookListener, ConnectionListener {
 			// downloading aax files
 			audible.downloadQueue.addListener(queueListener);
 			// converting aax to mp3.
-			audible.convertQueue.addListener(queueListener);
+			audible.convertQueueMP3.addListener(queueListener);
 			
 			
 			ConnectionNotifier.instance.addListener(this);
@@ -159,13 +159,22 @@ public class AudibleGUI implements BookListener, ConnectionListener {
 		return audible.getDownloadCount() > 0;
 	}
 	
-	public void convertAll() {
+	public void convertAllMP3() {
 		ArrayList<Book> l = new ArrayList<>();
 		for (Book b : audible.getBooks()) {
 			if (!audible.hasMP3(b))
 				l.add(b);
 		}
 		convertMP3(l);
+	}
+
+	public void convertAllMP4() {
+		ArrayList<Book> l = new ArrayList<>();
+		for (Book b : audible.getBooks()) {
+			if (!audible.hasMP4(b))
+				l.add(b);
+		}
+		convertMP4(l);
 	}
 	
 	public void downloadAll() {
@@ -225,7 +234,16 @@ public class AudibleGUI implements BookListener, ConnectionListener {
 	public void convertMP3(Collection<Book> list) {
 		if (list.size() > 0) {
 			bookNotifier.setEnabled(false);
-			audible.convertQueue.addAll(list);
+			audible.convertQueueMP3.addAll(list);
+			bookNotifier.setEnabled(true);
+			bookNotifier.booksUpdated();
+		}
+	}
+
+	public void convertMP4(Collection<Book> list) {
+		if (list.size() > 0) {
+			bookNotifier.setEnabled(false);
+			audible.convertQueueMP4.addAll(list);
 			bookNotifier.setEnabled(true);
 			bookNotifier.booksUpdated();
 		}
@@ -237,6 +255,10 @@ public class AudibleGUI implements BookListener, ConnectionListener {
 	
 	public boolean hasMP3(Book b) {
 		return audible.hasMP3(b);
+	}
+
+	public boolean hasMP4(Book b) {
+		return audible.hasMP4(b);
 	}
 	
 	public void refreshLibrary(final boolean quickRescan) {
@@ -354,15 +376,18 @@ public class AudibleGUI implements BookListener, ConnectionListener {
 			if (dl.size() != 0)
 				msg = "You have " + dl.size() + " book(s) to download.\n";
 			if (conv.size() != 0)
-				msg = "You have " + conv.size() + " book(s) to convert to MP3\n";
+				msg = "You have " + conv.size() + " book(s) to convert\n";
 			
-			LOG.info(msg + " autoConvert=" + prefs.autoConvert);
-			if (prefs.autoConvert || prefs.autoDownload) {
-				if (prefs.autoConvert)
+			LOG.info(msg + " autoConvertMP3=" + prefs.autoConvertMP3);
+			LOG.info(msg + "autoConvertMP4=" + prefs.autoConvertMP4);
+			if (prefs.autoConvertMP3 || prefs.autoDownload || prefs.autoConvertMP4) {
+				if (prefs.autoConvertMP3)
 					convertMP3(conv);
+				if (prefs.autoConvertMP4)
+					convertMP4(conv);
 				if (prefs.autoDownload)
 					downloadAAX(dl);
-				
+
 			} else {
 				
 				msg += "Would you like to start these job(s) now?";
@@ -415,11 +440,21 @@ public class AudibleGUI implements BookListener, ConnectionListener {
 		return null;
 	}
 	
-	public boolean canConvert() {
+	public boolean canConvertMP3() {
 		if (!hasFFMPEG) return false;
 		
 		for (Book b : getSelected()) {
-			if (audible.hasAAX(b) && !audible.hasMP3(b) && audible.convertQueue.canAdd(b))
+			if (audible.hasAAX(b) && !audible.hasMP3(b) && audible.convertQueueMP3.canAdd(b))
+				return true;
+		}
+		return false;
+	}
+
+	public boolean canConvertMP4() {
+		if (!hasFFMPEG) return false;
+
+		for (Book b : getSelected()) {
+			if (audible.hasAAX(b) && !audible.hasMP4(b) && audible.convertQueueMP3.canAdd(b))
 				return true;
 		}
 		return false;
@@ -500,8 +535,8 @@ public class AudibleGUI implements BookListener, ConnectionListener {
 				return out;
 			
 			case Converting:
-				int cl = audible.convertQueue.jobsInProgress();
-				int cq = audible.convertQueue.size();
+				int cl = audible.convertQueueMP3.jobsInProgress();
+				int cq = audible.convertQueueMP3.size();
 				if (cl == 0 && cq == 0)
 					return "";
 				out += "" + cl;
@@ -804,11 +839,11 @@ public class AudibleGUI implements BookListener, ConnectionListener {
 			if (hasMP3(b))
 				return "Converted to MP3";
 			if (hasAAX(b)) {
-				if (audible.convertQueue.isQueued(b))
+				if (audible.convertQueueMP3.isQueued(b))
 					return "In convert queue";
-				if (audible.convertQueue.inJob(b))
+				if (audible.convertQueueMP3.inJob(b))
 					return "Converting...";
-				if (!audible.convertQueue.canAdd(b))
+				if (!audible.convertQueueMP3.canAdd(b))
 					return "Unable to convert";     // ?
 				return "Ready to convert to MP3";
 			}
@@ -842,8 +877,10 @@ public class AudibleGUI implements BookListener, ConnectionListener {
 		Collection<Book> dl = audible.toDownload();
 		Collection<Book> conv = audible.toConvert();
 		
-		if (prefs.autoConvert)
+		if (prefs.autoConvertMP3)
 			convertMP3(conv);
+		if (prefs.autoConvertMP4)
+			convertMP4(conv);
 		if (prefs.autoDownload)
 			downloadAAX(dl);
 		
@@ -870,8 +907,8 @@ public class AudibleGUI implements BookListener, ConnectionListener {
 			if (prefs.concurrentDownloads < 1 || prefs.concurrentDownloads > 10)
 				prefs.concurrentDownloads = 3;
 			
-			audible.convertQueue.setConcurrentJobs(prefs.concurrentConversions);
-			audible.convertQueue.setConcurrentJobs(prefs.concurrentDownloads);
+			audible.convertQueueMP3.setConcurrentJobs(prefs.concurrentConversions);
+			audible.convertQueueMP3.setConcurrentJobs(prefs.concurrentDownloads);
 			
 			
 		} catch (Throwable th) {
@@ -1113,7 +1150,7 @@ public class AudibleGUI implements BookListener, ConnectionListener {
 				return audible.downloadQueue.contains(b);
 			
 			case Converting:
-				return audible.convertQueue.contains(b);
+				return audible.convertQueueMP3.contains(b);
 			
 			default:
 				LOG.error("unexpected status:" + status);

@@ -20,7 +20,7 @@ import java.util.List;
 public class BookButtonBar implements BookListener, SelectionListener {
 	public final GridData gd;
 	final ToolBar toolbar;
-	Command cmds[] = {Command.Quick_Refresh, Command.Rescan_Library, Command.Download, Command.Convert, Command.ViewInAudible, Command.Show_MP3, Command.Play, Command.Preferences};
+	Command cmds[] = {Command.Quick_Refresh, Command.Rescan_Library, Command.Download, Command.ConvertMP3, Command.ConvertMP4, Command.ViewInAudible, Command.Show_MP3, Command.Play, Command.Preferences};
 	
 	BookButtonBar(Composite parent, int gridStyle) {
 		toolbar = new ToolBar(parent, SWT.FLAT | SWT.NO_FOCUS);

@@ -22,7 +22,8 @@ public enum Command {
 	Rescan_Library,
 	Download,
 	ParseAAX,
-	Convert,
+	ConvertMP3,
+	ConvertMP4,
 	Download_All,
 	Convert_All,
 	Help,
@@ -86,7 +87,9 @@ public enum Command {
 				break;
 			case ParseAAX:
 				break;
-			case Convert:
+			case ConvertMP3:
+				break;
+			case ConvertMP4:
 				break;
 			case Download_All:
 				break;
@@ -163,7 +166,7 @@ public enum Command {
 				break;
 			case ParseAAX:
 				break;
-			case Convert:
+			case ConvertMP3:
 				break;
 			case Download_All:
 				break;

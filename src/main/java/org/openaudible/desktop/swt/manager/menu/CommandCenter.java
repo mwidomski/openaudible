@@ -12,7 +12,6 @@ import org.openaudible.Audible;
 import org.openaudible.audible.ConnectionNotifier;
 import org.openaudible.desktop.swt.gui.GUI;
 import org.openaudible.desktop.swt.gui.MessageBoxFactory;
-import org.openaudible.desktop.swt.gui.progress.ProgressTask;
 import org.openaudible.desktop.swt.manager.Application;
 import org.openaudible.desktop.swt.manager.AudibleGUI;
 import org.openaudible.desktop.swt.manager.Version;
@@ -200,7 +199,7 @@ public class CommandCenter {
 			case Copy:
 			case Paste:
 				break;
-			case Convert:
+			case ConvertMP3:
 				gui.convertSelected();
 				break;
 			case Rescan_Library:
@@ -307,8 +306,10 @@ public class CommandCenter {
 		if (expiredApp)
 			return c == Command.Quit || c == Command.Check_For_Update || c == Command.About;
 		switch (c) {
-			case Convert:
-				return gui.canConvert();
+			case ConvertMP3:
+				return gui.canConvertMP3();
+			case ConvertMP4:
+				return gui.canConvertMP4();
 			case Download:
 				return gui.canDownload();
 			case Show_AAX:

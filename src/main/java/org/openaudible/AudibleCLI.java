@@ -122,15 +122,26 @@ public class AudibleCLI {
 			case save:
 				audible.save();
 				break;
+
+			//TODO: change to convertMP3?
 			case convert:
 				if (args.length() > 0) {
-					audible.convertQueue.add(audible.findFirst(args, true));
+					audible.convertQueueMP3.add(audible.findFirst(args, true));
 				} else {
-					audible.convertQueue.addAll(audible.toConvert());
+					audible.convertQueueMP3.addAll(audible.toConvert());
 				}
 				break;
+
+			case convertMP4:
+				if (args.length() > 0) {
+					audible.convertQueueMP4.add(audible.findFirst(args, true));
+				}
+				else {
+					audible.convertQueueMP4.addAll(audible.toConvert);
+				}
 			case queues:
-				println("Convert Queue: " + audible.convertQueue.size());
+				println("MP3 Convert Queue: " + audible.convertQueueMP3.size());
+				println("MP4 Convert Queue: " + audible.convertQueueMP4.size());
 				println("Download Queue: " + audible.downloadQueue.size());
 				break;
 			
@@ -259,7 +270,7 @@ public class AudibleCLI {
 	}
 	
 	enum AudibleCmd {
-		help, update, info, convert, export, save, load, find, has, asText, asXML, home, quit, library, names, signout, title, list, forms, web, access, toDownload, setURL, gettest2, test1, test2, act, retag, parseAAX, toConvert, download, updateInfo, cookies, queues
+		help, update, info, convert, convertMP4, export, save, load, find, has, asText, asXML, home, quit, library, names, signout, title, list, forms, web, access, toDownload, setURL, gettest2, test1, test2, act, retag, parseAAX, toConvert, download, updateInfo, cookies, queues
 	}
 	
 }

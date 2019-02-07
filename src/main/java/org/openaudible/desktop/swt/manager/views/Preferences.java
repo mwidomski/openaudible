@@ -26,7 +26,7 @@ public class Preferences extends Dialog {
 	final String paths[] = new String[Directories.values().length];
 	final Text dirText[] = new Text[dirs.length];
 	Combo region;
-	Button autoConvert, autoDownload, autoWebPage;
+	Button autoConvertMP3, autoConvertMP4, autoDownload, autoWebPage;
 	
 	private Text email, password;
 	private boolean pathsChanged = false;
@@ -74,7 +74,8 @@ public class Preferences extends Dialog {
 			t.setText(d.getPath());
 		}
 		
-		autoConvert.setSelection(AudibleGUI.instance.prefs.autoConvert);
+		autoConvertMP3.setSelection(AudibleGUI.instance.prefs.autoConvertMP3);
+		autoConvertMP4.setSelection(AudibleGUI.instance.prefs.autoConvertMP4);
 		autoDownload.setSelection(AudibleGUI.instance.prefs.autoDownload);
 		autoWebPage.setSelection(AudibleGUI.instance.prefs.autoWebPage);
 		
@@ -99,7 +100,8 @@ public class Preferences extends Dialog {
 			prefs.audibleRegion = r;
 		}
 		
-		AudibleGUI.instance.prefs.autoConvert = autoConvert.getSelection();
+		AudibleGUI.instance.prefs.autoConvertMP3 = autoConvertMP3.getSelection();
+		AudibleGUI.instance.prefs.autoConvertMP4 = autoConvertMP4.getSelection()
 		AudibleGUI.instance.prefs.autoDownload = autoDownload.getSelection();
 		AudibleGUI.instance.prefs.autoWebPage = autoWebPage.getSelection();
 		
@@ -173,9 +175,13 @@ public class Preferences extends Dialog {
 		gd = new GridData(GridData.FILL_HORIZONTAL | GridData.GRAB_HORIZONTAL);
 		autoDownload.setLayoutData(gd);
 		
-		autoConvert = GridComposite.newCheck(group, "Automatically convert to MP3");
+		autoConvertMP3 = GridComposite.newCheck(group, "Automatically convert to MP3");
 		gd = new GridData(GridData.FILL_HORIZONTAL | GridData.GRAB_HORIZONTAL);
-		autoConvert.setLayoutData(gd);
+		autoConvertMP3.setLayoutData(gd);
+
+		autoConvertMP4 = GridComposite.newCheck(group, "Automatically convert to M4B");
+		gd = new GridData(GridData.FILL_HORIZONTAL | GridData.GRAB_HORIZONTAL);
+		autoConvertMP4.setLayoutData(gd);
 		
 		autoWebPage = GridComposite.newCheck(group, "Automatically Update Web Page");
 		gd = new GridData(GridData.FILL_HORIZONTAL | GridData.GRAB_HORIZONTAL);

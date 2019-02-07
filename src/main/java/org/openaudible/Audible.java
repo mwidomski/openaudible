@@ -44,7 +44,8 @@ public class Audible implements IQueueListener<Book> {
 	private final HashMap<String, Book> books = new HashMap<>(); // Book.id(), Book
 	private final HashSet<String> ignoreSet = new HashSet<>();        // book key ID to ignore.
 	public DownloadQueue downloadQueue;
-	public ConvertQueue convertQueue;
+	public ConvertQueue convertQueueMP3;
+	public ConvertQueue convertQueueMP4;
 	public long totalDuration = 0;
 	// private String activationBytes = "";
 	volatile boolean quit = false;
@@ -53,6 +54,7 @@ public class Audible implements IQueueListener<Book> {
 	String cookiesFileName = "cookies.json";
 	String bookFileName = "books.json";
 	HashSet<File> mp3Files = null;
+	HashSet<File> mp4Files = null;
 	HashSet<File> aaxFiles = null;
 	HashSet<Book> toDownload = new HashSet<>();
 	HashSet<Book> toConvert = new HashSet<>();
@@ -103,9 +105,13 @@ public class Audible implements IQueueListener<Book> {
 	}
 	
 	public void initConverter() {
-		convertQueue = new ConvertQueue();
+		convertQueueMP3 = new ConvertQueue();
 		convertToMP3 = true;
-		convertQueue.addListener(this);
+		convertQueueMP3.addListener(this);
+
+		convertQueueMP4 = new ConvertQueue();
+		convertToMP4 = true;
+		convertQueueMP4.addListener(this);
 	}
 	
 	public int getBookCount() {
@@ -288,7 +294,7 @@ public class Audible implements IQueueListener<Book> {
 		Collection<Book> toConvert = toConvert();
 		
 		if (autoConvertToMP3) {
-			results = convertQueue.addAll(toConvert);
+			results = convertQueueMP3.addAll(toConvert);
 			if (results.size() > 0) {
 				LOG.info("Added " + results.size() + " book(s) to convert queue.");
 			}
@@ -662,7 +668,11 @@ public class Audible implements IQueueListener<Book> {
 	}
 	
 	public boolean canConvert(Book b) {
-		return hasAAX(b) && !hasMP3(b) && convertQueue.canAdd(b);
+		return hasAAX(b) && !hasMP3(b) && convertQueueMP3.canAdd(b);
+	}
+
+	public boolean canConvertMP4(Book b){
+		return hasAAX(b) && !hasMP4(b) && convertQueueMP4.canAdd(b);
 	}
 	
 	public Set<Book> toDownload() {
@@ -678,7 +688,8 @@ public class Audible implements IQueueListener<Book> {
 	}
 	
 	public void quit() {
-		convertQueue.quit();
+		convertQueueMP3.quit();
+		convertQueueMP4.quit();
 		downloadQueue.quit();
 		try {
 			save();
@@ -870,7 +881,8 @@ public class Audible implements IQueueListener<Book> {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			convertQueue.add(b);
+			//TODO: Add a switch that adds either to MP3 or MP4 queue
+			convertQueueMP3.add(b);
 		}
 		
 		
@@ -927,7 +939,8 @@ public class Audible implements IQueueListener<Book> {
 			
 			boolean ok = takeBook(book);
 			if (ok)
-				convertQueue.add(book);
+				//TODO: Switch for MP4
+				convertQueueMP3.add(book);
 		}
 		
 		return book;
