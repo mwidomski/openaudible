@@ -123,7 +123,7 @@ public class AudibleCLI {
 				audible.save();
 				break;
 
-			//TODO: change to convertMP3?
+			//TODO: change to convert?
 			case convert:
 				if (args.length() > 0) {
 					audible.convertQueueMP3.add(audible.findFirst(args, true));

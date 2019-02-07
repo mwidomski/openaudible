@@ -9,18 +9,18 @@ import org.openaudible.util.queues.IQueueJob;
 import org.openaudible.util.queues.JobProgress;
 import org.openaudible.util.queues.ThreadedQueue;
 
-public class ConvertQueue extends ThreadedQueue<Book> {
+public class ConvertQueueMP3 extends ThreadedQueue<Book> {
 	
 	// Queue to convert audio books to mp3
-	private static final Log LOG = LogFactory.getLog(ConvertQueue.class);
+	private static final Log LOG = LogFactory.getLog(ConvertQueueMP3.class);
 	
-	public ConvertQueue() {
+	public ConvertQueueMP3() {
 		super(6);       // how many concurrent conversions to do.
 	}
 	
 	@Override
 	public IQueueJob createJob(Book b) {
-		ConvertJob c = new ConvertJob(b);
+		ConvertJobMP3 c = new ConvertJobMP3(b);
 		c.setProgress(new JobProgress<Book>(this, c, b));
 		return c;
 	}
@@ -31,7 +31,7 @@ public class ConvertQueue extends ThreadedQueue<Book> {
 	
 	@Override
 	public String toString() {
-		return "ConvertQueue";
+		return "ConvertQueueMP3";
 	}
 	
 }

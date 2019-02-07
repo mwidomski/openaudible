@@ -22,10 +22,11 @@ public enum Command {
 	Rescan_Library,
 	Download,
 	ParseAAX,
-	ConvertMP3,
-	ConvertMP4,
+	Convert_MP3,
+	Convert_MP4,
 	Download_All,
-	Convert_All,
+	Convert_All_MP3,
+	Convert_All_MP4,
 	Help,
 	Browser,
 	Check_For_Update,
@@ -87,13 +88,15 @@ public enum Command {
 				break;
 			case ParseAAX:
 				break;
-			case ConvertMP3:
+			case Convert_MP3:
 				break;
-			case ConvertMP4:
+			case Convert_MP4:
 				break;
 			case Download_All:
 				break;
-			case Convert_All:
+			case Convert_All_MP3:
+				break;
+			case Convert_All_MP4:
 				break;
 			case Help:
 				cmd = 'H';
@@ -166,11 +169,15 @@ public enum Command {
 				break;
 			case ParseAAX:
 				break;
-			case ConvertMP3:
+			case Convert_MP3:
+				break;
+			case Convert_MP4:
 				break;
 			case Download_All:
 				break;
-			case Convert_All:
+			case Convert_All_MP3:
+				break;
+			case Convert_All_MP4:
 				break;
 			case Browser:
 				break;

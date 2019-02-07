@@ -19,8 +19,8 @@ import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
-public class ConvertJob implements IQueueJob, LineListener {
-	private static final Log LOG = LogFactory.getLog(ConvertJob.class);
+public class ConvertJobMP3 implements IQueueJob, LineListener {
+	private static final Log LOG = LogFactory.getLog(ConvertJobMP3.class);
 	final Book book;
 	final File aax, mp3, image, temp;
 	volatile boolean quit = false;
@@ -35,7 +35,7 @@ public class ConvertJob implements IQueueJob, LineListener {
 	
 	final DebugBuffer stdErr = new DebugBuffer();
 	
-	public ConvertJob(Book b) {
+	public ConvertJobMP3(Book b) {
 		book = b;
 		aax = Audible.instance.getAAXFileDest(b);
 		mp3 = Audible.instance.getMP3FileDest(b);

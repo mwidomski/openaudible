@@ -101,7 +101,7 @@ public class Preferences extends Dialog {
 		}
 		
 		AudibleGUI.instance.prefs.autoConvertMP3 = autoConvertMP3.getSelection();
-		AudibleGUI.instance.prefs.autoConvertMP4 = autoConvertMP4.getSelection()
+		AudibleGUI.instance.prefs.autoConvertMP4 = autoConvertMP4.getSelection();
 		AudibleGUI.instance.prefs.autoDownload = autoDownload.getSelection();
 		AudibleGUI.instance.prefs.autoWebPage = autoWebPage.getSelection();
 		
@@ -179,7 +179,7 @@ public class Preferences extends Dialog {
 		gd = new GridData(GridData.FILL_HORIZONTAL | GridData.GRAB_HORIZONTAL);
 		autoConvertMP3.setLayoutData(gd);
 
-		autoConvertMP4 = GridComposite.newCheck(group, "Automatically convert to M4B");
+		autoConvertMP4 = GridComposite.newCheck(group, "Automatically convert to M4A");
 		gd = new GridData(GridData.FILL_HORIZONTAL | GridData.GRAB_HORIZONTAL);
 		autoConvertMP4.setLayoutData(gd);
 		

@@ -17,10 +17,7 @@ import org.openaudible.audible.AudibleScraper;
 import org.openaudible.books.Book;
 import org.openaudible.books.BookElement;
 import org.openaudible.books.BookNotifier;
-import org.openaudible.convert.AAXParser;
-import org.openaudible.convert.BookMerge;
-import org.openaudible.convert.ConvertQueue;
-import org.openaudible.convert.LookupKey;
+import org.openaudible.convert.*;
 import org.openaudible.download.DownloadQueue;
 import org.openaudible.progress.IProgressTask;
 import org.openaudible.util.CopyWithProgress;
@@ -44,12 +41,13 @@ public class Audible implements IQueueListener<Book> {
 	private final HashMap<String, Book> books = new HashMap<>(); // Book.id(), Book
 	private final HashSet<String> ignoreSet = new HashSet<>();        // book key ID to ignore.
 	public DownloadQueue downloadQueue;
-	public ConvertQueue convertQueueMP3;
-	public ConvertQueue convertQueueMP4;
+	public ConvertQueueMP3 convertQueueMP3;
+	public ConvertQueueMP4 convertQueueMP4;
 	public long totalDuration = 0;
 	// private String activationBytes = "";
 	volatile boolean quit = false;
 	boolean convertToMP3 = false;
+	boolean convertToMP4 = false;
 	String accountPrefsFileName = "account.json";
 	String cookiesFileName = "cookies.json";
 	String bookFileName = "books.json";
@@ -105,11 +103,11 @@ public class Audible implements IQueueListener<Book> {
 	}
 	
 	public void initConverter() {
-		convertQueueMP3 = new ConvertQueue();
+		convertQueueMP3 = new ConvertQueueMP3();
 		convertToMP3 = true;
 		convertQueueMP3.addListener(this);
 
-		convertQueueMP4 = new ConvertQueue();
+		convertQueueMP4 = new ConvertQueueMP4();
 		convertToMP4 = true;
 		convertQueueMP4.addListener(this);
 	}
@@ -438,6 +436,7 @@ public class Audible implements IQueueListener<Book> {
 	public void updateFileCache() {
 		mp3Files = getFileSet(Directories.MP3);
 		aaxFiles = getFileSet(Directories.AAX);
+		mp4Files = getFileSet(Directories.MP4);
 		needFileCacheUpdate = System.currentTimeMillis();
 		synchronized (lock) {
 			toDownload.clear();
@@ -569,6 +568,11 @@ public class Audible implements IQueueListener<Book> {
 		checkFileCache();
 		return mp3Files.contains(getMP3FileDest(b));
 	}
+
+	public boolean hasMP4(Book b){
+		checkFileCache();
+		return mp4Files.contains(getMP4FileDest(b));
+	}
 	
 	public boolean hasAAX(Book b) {
 		checkFileCache();
@@ -603,6 +607,10 @@ public class Audible implements IQueueListener<Book> {
 	
 	public File getMP3FileDest(Book b) {
 		return Directories.MP3.getDir(b.getProduct_id() + ".mp3");
+	}
+
+	public File getMP4FileDest(Book b) {
+		return Directories.MP4.getDir(b.getProduct_id() + ".m4a");
 	}
 	
 	public boolean hasImage(Book b) {

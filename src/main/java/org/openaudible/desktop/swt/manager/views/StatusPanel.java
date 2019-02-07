@@ -144,7 +144,7 @@ public class StatusPanel extends GridComposite implements BookListener, Connecti
 	}
 	
 	public enum Status {
-		Connected, Books, Hours, AAX_Files, MP3_Files, To_Download, To_Convert, Downloading, Converting;  //Connection,
+		Connected, Books, Hours, AAX_Files, MP3_Files, To_Download, To_Convert, Downloading, Converting_To_MP4, Converting_To_MP3;  //Connection,
 		
 		public String displayName() {
 			return name().replace('_', ' ');
@@ -155,7 +155,8 @@ public class StatusPanel extends GridComposite implements BookListener, Connecti
 				case To_Convert:
 				case Downloading:
 				case To_Download:
-				case Converting:
+				case Converting_To_MP4:
+				case Converting_To_MP3:
 				case MP3_Files:
 				case Connected:
 				case Hours:
@@ -189,7 +190,8 @@ public class StatusPanel extends GridComposite implements BookListener, Connecti
 				case To_Download:
 				case To_Convert:
 				case Downloading:
-				case Converting:
+				case Converting_To_MP4:
+				case Converting_To_MP3:
 					return true;
 				default:
 					assert (false);

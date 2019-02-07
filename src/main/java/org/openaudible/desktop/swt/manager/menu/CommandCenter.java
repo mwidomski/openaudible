@@ -199,9 +199,11 @@ public class CommandCenter {
 			case Copy:
 			case Paste:
 				break;
-			case ConvertMP3:
-				gui.convertSelected();
+			case Convert_MP3:
+				gui.convertSelectedMP3();
 				break;
+			case Convert_MP4:
+				gui.convertSelectedMP4();
 			case Rescan_Library:
 				gui.refreshLibrary(false);
 				break;
@@ -252,8 +254,11 @@ public class CommandCenter {
 			case Download_All:
 				gui.downloadAll();
 				break;
-			case Convert_All:
-				gui.convertAll();
+			case Convert_All_MP3:
+				gui.convertAllMP3();
+				break;
+			case Convert_All_MP4:
+				gui.convertAllMP4();
 				break;
 			case Test1:
 				gui.test1();
@@ -306,9 +311,9 @@ public class CommandCenter {
 		if (expiredApp)
 			return c == Command.Quit || c == Command.Check_For_Update || c == Command.About;
 		switch (c) {
-			case ConvertMP3:
+			case Convert_MP3:
 				return gui.canConvertMP3();
-			case ConvertMP4:
+			case Convert_MP4:
 				return gui.canConvertMP4();
 			case Download:
 				return gui.canDownload();
@@ -329,7 +334,9 @@ public class CommandCenter {
 				return gui.canViewInSystem();
 			case Download_All:
 				return gui.canDownloadAll();
-			case Convert_All:
+			case Convert_All_MP3:
+				return gui.canConvertAll();
+			case Convert_All_MP4:
 				return gui.canConvertAll();
 			case Logout_and_Clear_Cookies:
 				return true;    // connection.isConnected();
